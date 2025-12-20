@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>As'Vaye - Request a Ride</title>
-  <!-- PWA manifest -->
-  <link rel="manifest" href="https://initiativemarketinggroup.github.io/As-Vaye_PWA/manifest.json">
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#22c55e">
   <style>
     body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: white; padding: 20px; }
@@ -22,7 +21,7 @@
 </head>
 <body>
   <div class="card">
-    <img src="https://initiativemarketinggroup.github.io/As-Vaye_PWA/As-Vaye_logo.2.png" alt="As'Vaye Logo" class="logo">
+    <img src="As-Vaye_logo.2.png" alt="As'Vaye Logo" class="logo">
     <h2>Request a Ride</h2>
     <input id="name" placeholder="Your Name" required>
     <input id="phone" placeholder="Phone Number" required>
@@ -33,6 +32,31 @@
     <div class="success" id="success"></div>
   </div>
 
-  <script src="https://initiativemarketinggroup.github.io/As-Vaye_PWA/code.js"></script>
+  <script src="code.js"></script>
+  <script>
+    // Register service worker
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('Service Worker registered', reg))
+        .catch(err => console.error('SW registration failed', err));
+    }
+
+    // Handle PWA install prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      console.log("PWA install prompt available");
+    });
+
+    function showInstallPrompt() {
+      if(deferredPrompt){
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(choiceResult => {
+          deferredPrompt = null;
+        });
+      }
+    }
+  </script>
 </body>
 </html>
