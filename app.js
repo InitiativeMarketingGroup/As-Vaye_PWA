@@ -1,41 +1,25 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLz1M2P-c_CJpqg0ll3D81XsHf_eMo0uWFq2u4cEs-lBND0F6VsVaAXDN5s8CgJrg/exec";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>As'Vaye - Request a Ride</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#22c55e">
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; margin:0; }
+    button { padding: 16px 32px; font-size: 1rem; border:none; border-radius:10px; background:#22c55e; color:white; cursor:pointer; }
+    button:active { opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <button onclick="openScript()">Request a Ride</button>
 
-document.getElementById("submitBtn").addEventListener("click", async () => {
-  const btn = document.getElementById("submitBtn");
-  btn.disabled = true;
-
-  const data = {
-    name: document.getElementById("name").value,
-    phone: document.getElementById("phone").value,
-    pickup: document.getElementById("pickup").value,
-    destination: document.getElementById("destination").value,
-    time: document.getElementById("time").value
-  };
-
-  try {
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-    const result = await res.json();
-
-    if (result.success) {
-      document.getElementById("success").innerText = "Request received. We’ll contact you shortly on WhatsApp.";
-
-      // reset form
-      document.getElementById("name").value = "";
-      document.getElementById("phone").value = "";
-      document.getElementById("pickup").value = "";
-      document.getElementById("destination").value = "";
-      document.getElementById("time").value = "";
-    } else {
-      throw new Error("Server returned failure");
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyLz1M2P-c_CJpqg0ll3D81XsHf_eMo0uWFq2u4cEs-lBND0F6VsVaAXDN5s8CgJrg/exec";
+    function openScript() {
+      window.location.href = scriptURL;
     }
-  } catch (err) {
-    console.error("Submit error:", err);
-    document.getElementById("success").innerText = "There was an error submitting your request. Please try again.";
-  } finally {
-    btn.disabled = false;
-  }
-});
+  </script>
+</body>
+</html>
