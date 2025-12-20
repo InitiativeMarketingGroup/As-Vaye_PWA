@@ -1,82 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>As-Vaye | Download App</title>
-
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="manifest.json" />
-
-  <!-- Theme -->
-  <meta name="theme-color" content="#000000" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>As-Vaye - Download App</title>
+  <link rel="manifest" href="manifest.json">
   <style>
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #000;
-      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f172a;
+      color: white;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
       text-align: center;
-    }
-
-    .container {
-      max-width: 420px;
       padding: 20px;
     }
-
-    img {
-      width: 80%;
-      max-width: 320px;
+    .logo {
+      max-width: 250px;
       margin-bottom: 40px;
     }
-
     button {
-      width: 100%;
-      padding: 16px;
-      font-size: 18px;
-      background: #ffffff;
-      color: #000;
+      padding: 16px 24px;
+      font-size: 1.2rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
+      background: #22c55e;
+      color: white;
       cursor: pointer;
-    }
-
-    button:active {
-      opacity: 0.8;
+      font-weight: 600;
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <img
-      src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/logo.png"
-      alt="As-Vaye Logo"
-    />
-
-    <button onclick="goToDeviceSelect()">
-      Download App
-    </button>
-  </div>
-
-  <script>
-    // 🔁 IF OPENED AS INSTALLED APP → GO STRAIGHT TO APP
-    if (
-      window.matchMedia('(display-mode: standalone)').matches ||
-      window.navigator.standalone === true
-    ) {
-      window.location.replace('app.html');
-    }
-
-    function goToDeviceSelect() {
-      window.location.href = 'device.html';
-    }
-  </script>
+  <img src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png" alt="As-Vaye Logo" class="logo">
+  <h1>Download App</h1>
+  <button onclick="location.href='device-select.html'">Download App</button>
 </body>
 </html>
