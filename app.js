@@ -12,7 +12,7 @@ async function submitForm() {
 
   try {
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbyJ69vdx-qdVHhN-UrN5ZG1Fz4Ptdme8wBM5yA_ZEzKR4zDYpUAYJf8dr5-DjhePItg/exec",
+      "https://script.google.com/macros/s/AKfycbwgpGR0Ult-p7sJb8q2tFpec-TaFQ8ttuUACjb7mX0aRbeOTBhsHSHcBfScdzwtpQmJ/exec",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
