@@ -12,7 +12,7 @@ async function submitForm() {
 
   try {
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbx_feN0hSVFZaFbU7_JM0ka6IhYziqzo6kWi1Ib62UhevDiUixAYRRRfImvYAZ479g6/exec",
+      "https://script.google.com/macros/s/AKfycbyJ69vdx-qdVHhN-UrN5ZG1Fz4Ptdme8wBM5yA_ZEzKR4zDYpUAYJf8dr5-DjhePItg/exec",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -21,12 +21,9 @@ async function submitForm() {
     );
 
     const result = await res.json();
-
     if (result.success) {
       document.getElementById("success").innerText =
         "Request received. We’ll contact you shortly on WhatsApp.";
-
-      // Reset form
       document.getElementById("name").value = "";
       document.getElementById("phone").value = "";
       document.getElementById("pickup").value = "";
@@ -44,20 +41,16 @@ async function submitForm() {
   }
 }
 
-// Optional: PWA install prompt handler
+// Optional: PWA install prompt
 let deferredPrompt;
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
 });
-
 function showInstallPrompt() {
   if (deferredPrompt) {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === "accepted") {
-        console.log("User accepted the PWA install");
-      }
       deferredPrompt = null;
     });
   }
