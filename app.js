@@ -21,9 +21,12 @@ async function submitForm() {
     );
 
     const result = await res.json();
+
     if (result.success) {
       document.getElementById("success").innerText =
         "Request received. We’ll contact you shortly on WhatsApp.";
+
+      // Reset form
       document.getElementById("name").value = "";
       document.getElementById("phone").value = "";
       document.getElementById("pickup").value = "";
@@ -41,16 +44,20 @@ async function submitForm() {
   }
 }
 
-// Optional: PWA install prompt
+// Optional: PWA install prompt handler
 let deferredPrompt;
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
 });
+
 function showInstallPrompt() {
   if (deferredPrompt) {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the PWA install");
+      }
       deferredPrompt = null;
     });
   }
