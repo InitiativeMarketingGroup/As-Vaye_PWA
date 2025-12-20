@@ -2,7 +2,7 @@ const CACHE_NAME = 'asvaye-cache-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  'https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye-assets/main/As-Vaye_logo.2.png'
+  'https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png'
 ];
 
 // Install event
