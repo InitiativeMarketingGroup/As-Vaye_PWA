@@ -1,29 +1,41 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyJ69vdx-qdVHhN-UrN5ZG1Fz4Ptdme8wBM5yA_ZEzKR4zDYpUAYJf8dr5-DjhePItg/exec";
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
 
-async function submitForm() {
-  const data = {
-    name: name.value,
-    phone: phone.value,
-    pickup: pickup.value,
-    destination: destination.value,
-    time: time.value
-  };
+  const data = JSON.parse(e.postData.contents);
 
-  try {
-    const res = await fetch(WEB_APP_URL, {
-      method: "POST",
-      body: JSON.stringify(data)
-    });
+  // Append in exact column order
+  sheet.appendRow([
+    data.name,          // Name
+    data.phone,         // Phone
+    data.pickup,        // Pickup
+    data.destination,   // Destination
+    data.time,          // Time
+    new Date(),         // Timestamp
+    "NEW",              // Status
+    "",                 // Assigned Driver (blank for manual entry)
+    ""                  // Fare (blank for manual entry)
+  ]);
 
-    const result = await res.json();
+  // Send admin email notification
+  MailApp.sendEmail({
+    to: "initiativemarketinggroup@gmail.com",
+    subject: "🚨 New Ride Request",
+    htmlBody:
+      "<h3>New Ride Request</h3>" +
+      "<b>Name:</b> " + data.name + "<br>" +
+      "<b>Phone:</b> " + data.phone + "<br>" +
+      "<b>Pickup:</b> " + data.pickup + "<br>" +
+      "<b>Destination:</b> " + data.destination + "<br>" +
+      "<b>Time:</b> " + data.time
+  });
 
-    if (result.success) {
-      success.innerText = "Request received. We’ll contact you shortly.";
-    } else {
-      throw new Error("Submission failed");
-    }
-  } catch (err) {
-    success.innerText = "Error submitting request. Try again.";
-    console.error(err);
-  }
+  return ContentService
+    .createTextOutput(JSON.stringify({ success: true }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet() {
+  return HtmlService
+    .createHtmlOutputFromFile("index")
+    .setTitle("As'Vaye - Request a Ride");
 }
