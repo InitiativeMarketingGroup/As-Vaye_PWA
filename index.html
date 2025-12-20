@@ -1,18 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>As'Vaye - Download App</title>
-<style>
-  body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: white; text-align: center; padding: 40px; }
-  .logo { display: block; max-width: 400px; width: 80%; height: auto; margin: 0 auto 40px; }
-  .btn { display: inline-block; background: #22c55e; color: white; padding: 20px 40px; border-radius: 12px; text-decoration: none; font-size: 1.5rem; font-weight: bold; margin-top: 30px; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>As-Vaye | Download App</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#000000" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 420px;
+      padding: 20px;
+    }
+
+    img {
+      width: 80%;
+      max-width: 320px;
+      margin-bottom: 40px;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      font-size: 18px;
+      background: #ffffff;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:active {
+      opacity: 0.8;
+    }
+  </style>
 </head>
+
 <body>
-<img src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png" alt="As'Vaye Logo" class="logo">
-<h1>Download the App</h1>
-<a href="device.html" class="btn">Download App</a>
+  <div class="container">
+    <img
+      src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/logo.png"
+      alt="As-Vaye Logo"
+    />
+
+    <button onclick="goToDeviceSelect()">
+      Download App
+    </button>
+  </div>
+
+  <script>
+    // 🔁 IF OPENED AS INSTALLED APP → GO STRAIGHT TO APP
+    if (
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.navigator.standalone === true
+    ) {
+      window.location.replace('app.html');
+    }
+
+    function goToDeviceSelect() {
+      window.location.href = 'device.html';
+    }
+  </script>
 </body>
 </html>
