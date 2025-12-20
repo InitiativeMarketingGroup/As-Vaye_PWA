@@ -1,10 +1,12 @@
 {
   "name": "As'Vaye",
   "short_name": "As'Vaye",
-  "start_url": "./index.html",
+  "description": "Getting you where you need to go",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#22c55e",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png",
@@ -12,7 +14,7 @@
       "type": "image/png"
     },
     {
-      "src": "https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png",
+      "src": "https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye-assets/main/As-Vaye_logo.2.png",
       "sizes": "512x512",
       "type": "image/png"
     }
