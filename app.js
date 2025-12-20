@@ -1,40 +1,57 @@
-function doPost(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-  
-  const data = JSON.parse(e.postData.contents);
+async function submitForm() {
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
 
-  sheet.appendRow([
-    data.name,
-    data.phone,
-    data.pickup,
-    data.destination,
-    data.time,
-    new Date(),   // timestamp
-    "NEW",       // status
-    "",          // assigned driver
-    ""           // fare
-  ]);
+  const data = {
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    pickup: document.getElementById("pickup").value,
+    destination: document.getElementById("destination").value,
+    time: document.getElementById("time").value
+  };
 
-  MailApp.sendEmail({
-    to: "initiativemarketinggroup@gmail.com",
-    subject: "🚨 New Ride Request",
-    htmlBody: 
-      "<h3>New Ride Request</h3>" +
-      "<b>Name:</b> " + data.name + "<br>" +
-      "<b>Phone:</b> " + data.phone + "<br>" +
-      "<b>Pickup:</b> " + data.pickup + "<br>" +
-      "<b>Destination:</b> " + data.destination + "<br>" +
-      "<b>Time:</b> " + data.time
-  });
+  try {
+    const res = await fetch(
+      "https://script.google.com/macros/s/AKfycbyJ69vdx-qdVHhN-UrN5ZG1Fz4Ptdme8wBM5yA_ZEzKR4zDYpUAYJf8dr5-DjhePItg/exec",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      }
+    );
 
-  // Enable cross-origin requests
-  return ContentService
-    .createTextOutput(JSON.stringify({ success: true }))
-    .setMimeType(ContentService.MimeType.JSON)
-    .setHeader("Access-Control-Allow-Origin", "*")
-    .setHeader("Access-Control-Allow-Methods", "POST");
+    const result = await res.json();
+    if (result.success) {
+      document.getElementById("success").innerText =
+        "Request received. We’ll contact you shortly on WhatsApp.";
+      document.getElementById("name").value = "";
+      document.getElementById("phone").value = "";
+      document.getElementById("pickup").value = "";
+      document.getElementById("destination").value = "";
+      document.getElementById("time").value = "";
+    } else {
+      throw new Error("Server returned failure");
+    }
+  } catch (err) {
+    console.error("Submit error:", err);
+    document.getElementById("success").innerText =
+      "There was an error submitting your request. Please try again.";
+  } finally {
+    btn.disabled = false;
+  }
 }
 
-function doGet() {
-  return HtmlService.createHtmlOutputFromFile('index');
+// Optional: PWA install prompt
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+function showInstallPrompt() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      deferredPrompt = null;
+    });
+  }
 }
