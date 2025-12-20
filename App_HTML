@@ -7,20 +7,13 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#22c55e">
   <style>
-    body { font-family: system-ui, sans-serif; background: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-    img { max-width: 120px; margin-bottom: 24px; }
-    button { padding: 14px 28px; background: #22c55e; border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 1rem; cursor: pointer; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: white; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; margin:0; }
+    .logo { max-width: 120px; margin-bottom: 30px; }
+    .btn { background:#22c55e; color:#0f172a; border:none; padding: 16px 32px; font-size:1.1rem; border-radius:12px; cursor:pointer; text-decoration:none; font-weight:600; }
   </style>
 </head>
 <body>
-  <img src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png" alt="As'Vaye Logo">
-  <button id="rideBtn">Request a Ride</button>
-
-  <script>
-    const googleScriptURL = "https://script.google.com/macros/s/AKfycbyLz1M2P-c_CJpqg0ll3D81XsHf_eMo0uWFq2u4cEs-lBND0F6VsVaAXDN5s8CgJrg/exec";
-    document.getElementById('rideBtn').addEventListener('click', () => {
-      window.location.href = googleScriptURL;
-    });
-  </script>
+  <img src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png" alt="As'Vaye Logo" class="logo">
+  <a href="https://script.google.com/macros/s/AKfycbyLz1M2P-c_CJpqg0ll3D81XsHf_eMo0uWFq2u4cEs-lBND0F6VsVaAXDN5s8CgJrg/exec" class="btn">Request a Ride</a>
 </body>
 </html>
