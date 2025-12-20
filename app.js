@@ -1,6 +1,7 @@
 async function submitForm() {
   const btn = document.getElementById("submitBtn");
   btn.disabled = true;
+
   const data = {
     name: document.getElementById("name").value,
     phone: document.getElementById("phone").value,
@@ -15,6 +16,7 @@ async function submitForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
+
     const result = await res.json();
     if(result.success){
       document.getElementById("success").innerText = "Request received. We’ll contact you shortly on WhatsApp.";
