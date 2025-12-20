@@ -1,4 +1,6 @@
-async function submitForm() {
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLz1M2P-c_CJpqg0ll3D81XsHf_eMo0uWFq2u4cEs-lBND0F6VsVaAXDN5s8CgJrg/exec";
+
+document.getElementById("submitBtn").addEventListener("click", async () => {
   const btn = document.getElementById("submitBtn");
   btn.disabled = true;
 
@@ -11,22 +13,17 @@ async function submitForm() {
   };
 
   try {
-    const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbwgpGR0Ult-p7sJb8q2tFpec-TaFQ8ttuUACjb7mX0aRbeOTBhsHSHcBfScdzwtpQmJ/exec",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      }
-    );
-
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
     const result = await res.json();
 
     if (result.success) {
-      document.getElementById("success").innerText =
-        "Request received. We’ll contact you shortly on WhatsApp.";
+      document.getElementById("success").innerText = "Request received. We’ll contact you shortly on WhatsApp.";
 
-      // Reset form
+      // reset form
       document.getElementById("name").value = "";
       document.getElementById("phone").value = "";
       document.getElementById("pickup").value = "";
@@ -37,28 +34,8 @@ async function submitForm() {
     }
   } catch (err) {
     console.error("Submit error:", err);
-    document.getElementById("success").innerText =
-      "There was an error submitting your request. Please try again.";
+    document.getElementById("success").innerText = "There was an error submitting your request. Please try again.";
   } finally {
     btn.disabled = false;
   }
-}
-
-// Optional: PWA install prompt handler
-let deferredPrompt;
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
 });
-
-function showInstallPrompt() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === "accepted") {
-        console.log("User accepted the PWA install");
-      }
-      deferredPrompt = null;
-    });
-  }
-}
