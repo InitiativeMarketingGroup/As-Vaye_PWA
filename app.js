@@ -1,37 +1,39 @@
-async function submitForm() {
-  const btn = document.getElementById("submitBtn");
-  btn.disabled = true;
+const CACHE_NAME = "asvaye-cache-v1";
+const urlsToCache = [
+  "/",
+  "https://initiativemarketinggroup.github.io/As-Vaye_PWA/",
+  "https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png"
+];
 
-  const data = {
-    name: document.getElementById("name").value,
-    phone: document.getElementById("phone").value,
-    pickup: document.getElementById("pickup").value,
-    destination: document.getElementById("destination").value,
-    time: document.getElementById("time").value
-  };
+// Install event
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(urlsToCache);
+    })
+  );
+});
 
-  try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycbyJ69vdx-qdVHhN-UrN5ZG1Fz4Ptdme8wBM5yA_ZEzKR4zDYpUAYJf8dr5-DjhePItg/exec", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
+// Activate event
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((keyList) => {
+      return Promise.all(
+        keyList.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    })
+  );
+});
 
-    const result = await res.json();
-    if(result.success){
-      document.getElementById("success").innerText = "Request received. We’ll contact you shortly on WhatsApp.";
-      document.getElementById("name").value = "";
-      document.getElementById("phone").value = "";
-      document.getElementById("pickup").value = "";
-      document.getElementById("destination").value = "";
-      document.getElementById("time").value = "";
-    } else {
-      throw new Error("Server returned failure");
-    }
-  } catch(err){
-    console.error("Submit error:", err);
-    document.getElementById("success").innerText = "There was an error submitting your request. Please try again.";
-  } finally {
-    btn.disabled = false;
-  }
-}
+// Fetch event
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
+});
