@@ -3,21 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>As'Vaye</title>
-  <!-- Manifest for PWA -->
-  <link rel="manifest" href="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/manifest.json">
+  <title>As'Vaye - Download App</title>
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#22c55e">
   <style>
-    body { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: system-ui, sans-serif; background-color: #0f172a; color: white; }
-    img { max-width: 120px; margin-bottom: 40px; }
-    button { padding: 16px 32px; font-size: 1.2rem; border-radius: 10px; border: none; background-color: #22c55e; color: #fff; cursor: pointer; font-weight: 600; }
-    button:active { opacity: 0.7; }
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+    img { max-width: 120px; margin-bottom: 24px; }
+    button { padding: 14px 28px; background: #22c55e; border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 1rem; cursor: pointer; }
   </style>
 </head>
 <body>
   <img src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png" alt="As'Vaye Logo">
-  <button id="requestBtn">Request a Ride</button>
+  <button id="installBtn">Download App</button>
 
-  <script src="app.js"></script>
+  <script>
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    document.getElementById('installBtn').addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+        if(choice.outcome === 'accepted') console.log('App installed');
+        deferredPrompt = null;
+      } else {
+        alert('PWA install not available on this browser.');
+      }
+    });
+  </script>
 </body>
 </html>
