@@ -1,71 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>As'Vaye - Request a Ride</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#22c55e">
-  <style>
-    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: white; padding: 20px; }
-    .card { max-width: 420px; margin: auto; background: #111827; padding: 24px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
-    h2 { margin-bottom: 18px; font-size: 1.4rem; text-align: center; }
-    input, button { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: none; font-size: 0.95rem; }
-    input { background: #1f2937; color: white; }
-    input::placeholder { color: #9ca3af; }
-    button { background: #22c55e; font-weight: 600; cursor: pointer; }
-    button:disabled { opacity: 0.6; }
-    .success { color: #22c55e; margin-top: 10px; font-size: 0.9rem; text-align:center; }
-    .logo { display: block; max-width: 100px; margin: 0 auto 16px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>As'Vaye - Request a Ride</title>
+<style>
+  body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: white; padding: 20px; }
+  .card { max-width: 420px; margin: auto; background: #111827; padding: 24px; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+  h2 { margin-bottom: 18px; font-size: 1.4rem; text-align: center; }
+  input, button { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: none; font-size: 0.95rem; }
+  input { background: #1f2937; color: white; }
+  input::placeholder { color: #9ca3af; }
+  button { background: #22c55e; font-weight: 600; cursor: pointer; }
+  button:disabled { opacity: 0.6; }
+  .success { color: #22c55e; margin-top: 10px; font-size: 0.9rem; text-align:center; }
+  .logo { display: block; max-width: 400px; width: 80%; height: auto; margin: 0 auto 16px; }
+</style>
 </head>
 <body>
-  <div class="card">
-    <img src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png" alt="As'Vaye Logo" class="logo">
-    <h2>Request a Ride</h2>
-    <input id="name" placeholder="Your Name" required>
-    <input id="phone" placeholder="Phone Number" required>
-    <input id="pickup" placeholder="Pickup Location" required>
-    <input id="destination" placeholder="Destination" required>
-    <input id="time" placeholder="When? (ASAP or Time)" required>
-    <button id="submitBtn" onclick="submitForm()">Submit</button>
-    <div class="success" id="success"></div>
-  </div>
+<div class="card">
+  <img src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png" alt="As'Vaye Logo" class="logo">
+  <h2>Request a Ride</h2>
+  <input id="name" placeholder="Your Name" required>
+  <input id="phone" placeholder="Phone Number" required>
+  <input id="pickup" placeholder="Pickup Location" required>
+  <input id="destination" placeholder="Destination" required>
+  <input id="time" placeholder="When? (ASAP or Time)" required>
+  <button id="submitBtn" onclick="submitForm()">Submit</button>
+  <div class="success" id="success"></div>
+</div>
 
-  <script>
-    async function submitForm() {
-      const btn = document.getElementById("submitBtn");
-      btn.disabled = true;
-      const data = {
-        name: document.getElementById("name").value,
-        phone: document.getElementById("phone").value,
-        pickup: document.getElementById("pickup").value,
-        destination: document.getElementById("destination").value,
-        time: document.getElementById("time").value
-      };
-      try {
-        const res = await fetch("https://script.google.com/macros/s/AKfycbyLz1M2P-c_CJpqg0ll3D81XsHf_eMo0uWFq2u4cEs-lBND0F6VsVaAXDN5s8CgJrg/exec", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        if(result.success){
-          document.getElementById("success").innerText = "Request received. We’ll contact you shortly on WhatsApp.";
-          // reset form
-          document.getElementById("name").value = "";
-          document.getElementById("phone").value = "";
-          document.getElementById("pickup").value = "";
-          document.getElementById("destination").value = "";
-          document.getElementById("time").value = "";
-        } else throw new Error("Server returned failure");
-      } catch(err){
-        console.error("Submit error:", err);
-        document.getElementById("success").innerText = "There was an error submitting your request. Please try again.";
-      } finally {
-        btn.disabled = false;
-      }
+<script>
+async function submitForm() {
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  const data = {
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    pickup: document.getElementById("pickup").value,
+    destination: document.getElementById("destination").value,
+    time: document.getElementById("time").value
+  };
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbyLz1M2P-c_CJpqg0ll3D81XsHf_eMo0uWFq2u4cEs-lBND0F6VsVaAXDN5s8CgJrg/exec", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+    if(result.success) {
+      document.getElementById("success").innerText = "Request received. We’ll contact you shortly on WhatsApp.";
+      document.getElementById("name").value = "";
+      document.getElementById("phone").value = "";
+      document.getElementById("pickup").value = "";
+      document.getElementById("destination").value = "";
+      document.getElementById("time").value = "";
+    } else {
+      throw new Error("Server returned failure");
     }
-  </script>
+  } catch(err) {
+    console.error("Submit error:", err);
+    document.getElementById("success").innerText = "There was an error submitting your request. Please try again.";
+  } finally {
+    btn.disabled = false;
+  }
+}
+</script>
 </body>
 </html>
