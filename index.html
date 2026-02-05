@@ -3,58 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>As-Vaye – Request a Ride</title>
 
-  <title>Tow Assist</title>
-
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#000000" />
-  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="manifest" href="manifest.json">
 
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #000;
-      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f172a;
+      color: #ffffff;
       padding: 20px;
+    }
+    .card {
+      max-width: 420px;
+      margin: auto;
+      background: #111827;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 18px;
     }
     input, button {
       width: 100%;
-      padding: 14px;
-      margin: 10px 0;
+      padding: 12px;
+      margin-bottom: 12px;
       border-radius: 8px;
       border: none;
+      font-size: 0.95rem;
+    }
+    input {
+      background: #1f2937;
+      color: #fff;
+    }
+    input::placeholder {
+      color: #9ca3af;
     }
     button {
-      background: #00ff99;
-      font-weight: bold;
+      background: #22c55e;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:disabled {
+      opacity: 0.6;
+    }
+    .success {
+      color: #22c55e;
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+    .error {
+      color: #ef4444;
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+    .logo {
+      display: block;
+      max-width: 140px;
+      margin: 0 auto 18px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Tow Assist</h1>
+  <div class="card">
+    <img
+      src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png"
+      class="logo"
+      alt="As-Vaye Logo"
+    />
 
-  <input id="name" placeholder="Your Name" />
-  <input id="phone" placeholder="Phone Number" />
-  <input id="pickup" placeholder="Pickup Location" />
-  <input id="dropoff" placeholder="Drop-off Location" />
+    <h2>Request a Ride</h2>
 
-  <button onclick="submitForm()">Request Tow</button>
+    <input id="name" placeholder="Your Name" />
+    <input id="phone" placeholder="Phone Number" />
+    <input id="pickup" placeholder="Pickup Location" />
+    <input id="destination" placeholder="Destination" />
+    <input id="time" placeholder="When? (ASAP or Time)" />
 
-  <p id="status"></p>
+    <button id="submitBtn" onclick="submitRide()">Submit</button>
+
+    <div id="message"></div>
+  </div>
 
   <script>
-    const API_URL = "PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE";
+    const API_URL = "https://script.google.com/macros/s/AKfycbxunop2JWEk-MYFtVR07MSmw1AoD797bBUqCPBwm6sgC_PwkYrk9YEdN662NPBlPZg/exec";
 
-    function submitForm() {
-      document.getElementById("status").innerText = "Submitting...";
+    function submitRide() {
+      const btn = document.getElementById("submitBtn");
+      const msg = document.getElementById("message");
 
-      const payload = {
-        name: document.getElementById("name").value,
-        phone: document.getElementById("phone").value,
-        pickup: document.getElementById("pickup").value,
-        dropoff: document.getElementById("dropoff").value
+      btn.disabled = true;
+      btn.innerText = "Sending...";
+      msg.innerHTML = "";
+
+      const data = {
+        name: document.getElementById("name").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        pickup: document.getElementById("pickup").value.trim(),
+        destination: document.getElementById("destination").value.trim(),
+        time: document.getElementById("time").value.trim()
       };
 
       fetch(API_URL, {
@@ -62,23 +114,26 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(data)
       })
       .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          document.getElementById("status").innerText = "Request sent successfully ✅";
+      .then(res => {
+        if (res.success) {
+          msg.innerHTML = `<div class="success">Request received. We’ll contact you shortly.</div>`;
+          document.querySelectorAll("input").forEach(i => i.value = "");
         } else {
-          document.getElementById("status").innerText = "Error submitting ❌";
+          throw new Error(res.error || "Submission failed");
         }
       })
       .catch(err => {
-        document.getElementById("status").innerText = "Network error ❌";
-        console.error(err);
+        msg.innerHTML = `<div class="error">Error submitting request. Try again.</div>`;
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.innerText = "Submit";
       });
     }
   </script>
 
 </body>
 </html>
-
