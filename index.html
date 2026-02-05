@@ -1,25 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>As-Vaye Ride App</title>
-  <link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Tow Assist</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
   <style>
-    body { font-family: system-ui, sans-serif; background: #0f172a; color: white; text-align:center; padding:50px; }
-    .logo { max-width: 300px; margin-bottom: 40px; }
-    button { padding: 16px 32px; font-size: 1.2rem; border-radius: 12px; border: none; background:#22c55e; color:white; cursor:pointer; }
-  </style>
-  <script>
-    // Optional: auto-redirect for installed PWA
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      window.location.href = "app.html";
+    body {
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      padding: 20px;
     }
-  </script>
+    input, button {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background: #00ff99;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <img src="https://raw.githubusercontent.com/InitiativeMarketingGroup/As-Vaye_PWA/main/As-Vaye_logo_logo.2.png" class="logo" alt="As-Vaye Logo">
-  <h1>Download the App</h1>
-  <button onclick="window.location.href='device.html'">Download App</button>
+
+  <h1>Tow Assist</h1>
+
+  <input id="name" placeholder="Your Name" />
+  <input id="phone" placeholder="Phone Number" />
+  <input id="pickup" placeholder="Pickup Location" />
+  <input id="dropoff" placeholder="Drop-off Location" />
+
+  <button onclick="submitForm()">Request Tow</button>
+
+  <p id="status"></p>
+
+  <script>
+    const API_URL = "PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE";
+
+    function submitForm() {
+      document.getElementById("status").innerText = "Submitting...";
+
+      const payload = {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        pickup: document.getElementById("pickup").value,
+        dropoff: document.getElementById("dropoff").value
+      };
+
+      fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById("status").innerText = "Request sent successfully ✅";
+        } else {
+          document.getElementById("status").innerText = "Error submitting ❌";
+        }
+      })
+      .catch(err => {
+        document.getElementById("status").innerText = "Network error ❌";
+        console.error(err);
+      });
+    }
+  </script>
+
 </body>
 </html>
+
